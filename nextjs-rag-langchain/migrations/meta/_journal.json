@@ -15,6 +15,13 @@
       "when": 1789134777712,
       "tag": "0001_gigantic_overlord",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789241972642,
+      "tag": "0002_dizzy_rhodey",
+      "breakpoints": true
     }
   ]
 }

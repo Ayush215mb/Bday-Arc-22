@@ -7,13 +7,12 @@ import {
     toUIMessageStream,
 } from "ai";
 
-import { createGoogle } from "@ai-sdk/google";
+import { createGoogle, createGoogleGenerativeAI } from "@ai-sdk/google";
 
 import "dotenv/config";
-const google = createGoogle({
+const google = createGoogleGenerativeAI({
     apiKey: process.env.GEMINI_API_KEY,
 });
-
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
