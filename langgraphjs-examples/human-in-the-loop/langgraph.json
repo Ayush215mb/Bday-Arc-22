@@ -1,0 +1,7 @@
+{
+    "dependencies": ["."],
+    "graphs": {
+        "RefundAgent": "./src/index.ts:graph"
+    },
+    "env": ".env"
+}
