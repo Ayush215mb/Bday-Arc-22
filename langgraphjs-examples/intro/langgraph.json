@@ -1,7 +1,7 @@
 {
     "dependencies": ["."],
     "graphs": {
-        "my_agent": "./src/index.ts:agent"
+        "my_agent": "./src/index.ts:graph"
     },
     "env": {
         "OPENAI_API_KEY": "secret-key"
