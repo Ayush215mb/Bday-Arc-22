@@ -8,6 +8,7 @@ import {
     StateGraph,
 } from "@langchain/langgraph";
 import { ChatGoogle } from "@langchain/google";
+import { ChatOllama } from "@langchain/ollama";
 import { tool } from "@langchain/core/tools";
 import { z } from "zod";
 import "dotenv/config";
@@ -19,10 +20,10 @@ const graphAnnotation = Annotation.Root({
     refundAuthorized: Annotation<boolean>(),
 });
 
-const llm = new ChatGoogle("gemini-3.5-flash", {
-    apiKey: process.env.GEMINI_API_KEY!,
+const llm = new ChatOllama({
+    model: "qwen2.5:7b-instruct",
+    temperature: 0,
 });
-
 const processRefundTool = tool(
     (input) => {
         return `Successfully processed refund for ${input.orderid}`;
