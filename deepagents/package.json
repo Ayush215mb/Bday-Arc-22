@@ -1,0 +1,38 @@
+{
+    "name": "deepagents",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start:basic": "tsx src/basicDeepAgent.ts",
+        "start:backends": "tsx src/backends.ts"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devEngines": {
+        "packageManager": {
+            "name": "pnpm",
+            "version": "12.4.2",
+            "onFail": "download"
+        }
+    },
+    "packageManager": "pnpm@12.4.2",
+    "type": "module",
+    "dependencies": {
+        "@langchain/core": "^1.2.11",
+        "@langchain/langgraph": "^1.4.15",
+        "@langchain/ollama": "^1.3.0",
+        "@langchain/tavily": "^1.2.0",
+        "deepagents": "^1.13.4",
+        "dotenv": "^17.4.2",
+        "langchain": "^1.5.11",
+        "zod": "^4.6.5"
+    },
+    "devDependencies": {
+        "@types/node": "^22.20.3",
+        "eslint": "^10.10.0",
+        "tsx": "^4.23.13",
+        "typescript": "^7.0.2"
+    }
+}
