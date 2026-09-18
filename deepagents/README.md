@@ -1,18 +1,46 @@
 # what are deep agents?
 
-Deep agents are a standalone library built on top of LangGraph that brings production-grade capabilities to LLM agents. Unlike simple agents that just loop between “think, act, observe,” deep agents come with built-in infrastructure for handling real-world complexity.
+DeepAgents is an open-source agent harness built on top of Langchain and LangGraph. It is designed to handle complex, open-ended tasks over long time horizons and is particularly useful for building agents and applications that are powered by large language models (LLMs). Here are some key features and capabilities of DeepAgents:
 
-Here is what makes them different from a basic ReAct agent:
+## Key Features and Capabilities:
 
-**Planning** -- Deep agents automatically break down complex tasks into subtasks using a built-in write_todos tool. Before diving into execution, they create a plan of attack.
+1. **Execution Environment**:
+    - Tools
+    - Virtual Filesystem
+    - Optional Sandbox
+    - REPL (Read-Eval-Print Loop)
 
-**File System for Context Management** -- LLMs have limited context windows. Deep agents solve this by offloading large intermediate results (like search results or document content) into a virtual file system using write_file and read_file tools. This means they can handle tasks that produce far more data than a context window could hold.
+2. **Context Management**:
+    - Skills
+    - Memory
+    - Summarization
+    - Context Offloading
+    - Prompt Caching
 
-**Subagent Spawning** -- For complex tasks, a deep agent can delegate subtasks to specialized subagents. Each subagent operates in its own context isolation, preventing the “context pollution” problem where unrelated information from one subtask confuses another.
+3. **Delegation**:
+    - Subagent Spawning
+    - Optional Task Planning
 
-**Persistent Memory** -- Deep agents can persist memory across conversations and threads, making them suitable for long-running tasks and multi-session workflows.
+4. **Steering**:
+    - Human-in-the-loop Approval
+    - Interrupts
 
-# Deep Agents vs Basic Agents: When to Use What
+## **Components**:
+
+- **Planning Tools**: These help agents break down complex tasks and track progress.
+
+- **Access to Filesystem**: Agents can access and manipulate the file system, which is useful for managing context and storing long-term memory.
+
+- **Subagent Delegation**: Agents can spawn subagents to handle specific tasks, allowing for parallel processing and task decomposition.
+
+- **Human-in-the-loop Support**: This feature allows for human oversight and intervention, which can be crucial for complex tasks.
+
+## Use Cases:
+
+- **Complex, Multi-Step Tasks**: DeepAgents is particularly useful for tasks that require long-term planning and execution, such as research, coding, and multi-step workflows.
+- **Customizability**: While DeepAgents provides a lot of built-in functionality, it is also highly customizable, allowing developers to add their own tools, skills, and instructions.
+
+## Deep Agents vs Basic Agents: When to Use What
 
 Use a basic agent when:
 
