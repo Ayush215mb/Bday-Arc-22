@@ -6,7 +6,8 @@
     "scripts": {
         "start:basic": "tsx src/basicDeepAgent.ts",
         "start:backends": "tsx src/backends.ts",
-        "start:context": "tsx src/contextEngineering.ts"
+        "start:context": "tsx src/contextEngineering.ts",
+        "start:subagents": "tsx src/subAgents.ts"
     },
     "keywords": [],
     "author": "",
