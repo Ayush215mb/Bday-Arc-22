@@ -12,13 +12,16 @@ import {
     stepCountIs,
 } from "ai";
 import z from "zod";
+import { ollama } from "ollama-ai-provider-v2";
 import { createGoogle, createGoogleGenerativeAI } from "@ai-sdk/google";
 
 import "dotenv/config";
 import { searchDocument } from "@/lib/search";
-const google = createGoogleGenerativeAI({
-    apiKey: process.env.GEMINI_API_KEY,
-});
+
+// const google = createGoogleGenerativeAI({
+//     apiKey: process.env.GEMINI_API_KEY,
+// });
+
 export const maxDuration = 30;
 
 const tools = {
@@ -59,7 +62,8 @@ export async function POST(req: Request) {
     const { messages }: { messages: ChatMessage[] } = await req.json();
 
     const result = streamText({
-        model: google.interactions("gemini-3.5-flash"),
+        // model: google.interactions("gemini-3.5-flash"),
+        model: ollama("gpt-oss:20b"),
         instructions:
             "You are a helpful assistant with access to a knowledge base. When users ask question, search the knowledge base before answering to find relevant information. Try to keep your response under 30-40 words ",
         messages: await convertToModelMessages(messages),
