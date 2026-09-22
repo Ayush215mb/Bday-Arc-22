@@ -1,6 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/server";
 import { StdioServerTransport } from "@modelcontextprotocol/server/stdio";
 import { z } from "zod";
+import { User, users } from "./data.ts";
 const server = new McpServer(
     {
         name: "testing",
@@ -14,7 +15,9 @@ const server = new McpServer(
         },
     },
 );
-function createUser() {}
+function createUser(user: User) {
+    users.push(user);
+}
 server.registerTool(
     "Create a user",
     {
