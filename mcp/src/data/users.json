@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Alice Johnson",
+    "email": "alice@test.com",
+    "country": "INDIA"
+  },
+  {
+    "id": 2,
+    "name": "Ayush",
+    "email": "ayush@test.com",
+    "country": "BRAZIL"
+  },
+  {
+    "id": 2,
+    "name": "Yadav Johnson",
+    "email": "yadav@test.com",
+    "country": "USA"
+  },
+  {
+    "id": 4,
+    "name": "ayush yadav",
+    "email": "none@gmail.com",
+    "country": "JAPAN"
+  },
+  {
+    "id": 5,
+    "name": "ayush yadav",
+    "email": "none@gmail.com",
+    "country": "JAPAN"
+  },
+  {
+    "id": 6,
+    "name": "Ayush YAdav",
+    "email": "ayush@gmail.com",
+    "country": "JAPAN"
+  }
+]
