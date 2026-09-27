@@ -1,0 +1,34 @@
+{
+    "name": "rag",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "doc": "tsx src/document.ts",
+        "ingest": "tsx src/ingestData.ts"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devEngines": {
+        "packageManager": {
+            "name": "pnpm",
+            "version": "12.6.0",
+            "onFail": "download"
+        }
+    },
+    "packageManager": "pnpm@12.6.0",
+    "type": "module",
+    "dependencies": {
+        "@langchain/classic": "^1.0.48",
+        "@langchain/community": "^1.1.29",
+        "@langchain/core": "^1.2.12",
+        "@langchain/textsplitters": "^1.0.1",
+        "deepagents": "^1.14.1",
+        "dotenv": "^18.0.4",
+        "langchain": "^1.5.12",
+        "pdf-parse": "^1.1.4",
+        "tsx": "^4.23.15",
+        "zod": "^4.6.5"
+    }
+}
