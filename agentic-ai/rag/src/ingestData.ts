@@ -1,11 +1,6 @@
-import { Document } from "@langchain/core/documents";
-import { TextLoader } from "@langchain/classic/document_loaders/fs/text";
-import { DirectoryLoader } from "@langchain/classic/document_loaders/fs/directory";
-import {
-    JSONLoader,
-    JSONLinesLoader,
-} from "@langchain/classic/document_loaders/fs/json";
+import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
+import { Document } from "@langchain/core/documents";
 import { readdirSync } from "fs";
 
 async function processPdf(data_path: string) {
@@ -36,7 +31,7 @@ async function processPdf(data_path: string) {
 
             console.log(`complete loading ${documents.length} pages `);
 
-            allDocuments.push(documents);
+            allDocuments.push(...documents);
         } catch (error) {
             console.log(error);
         }
@@ -47,4 +42,25 @@ async function processPdf(data_path: string) {
     return allDocuments;
 }
 
-await processPdf("./data");
+const documents = await processPdf("./data");
+
+console.log(documents.length);
+
+async function splitDocuemts(
+    docuemnts: Document<Record<string, any>>[],
+    chunkSize = 1000,
+    chunk_overlap = 200,
+) {
+    const textsplitters = new RecursiveCharacterTextSplitter({
+        chunkSize: chunkSize,
+        chunkOverlap: chunk_overlap,
+        separators: ["\n\n", "\n", " ", ""],
+    });
+    const splitDocs = await textsplitters.splitDocuments(docuemnts);
+
+    console.log(`Split ${docuemnts.length} into ${splitDocs.length} chunks`);
+
+    return splitDocs;
+}
+
+export const chunks = await splitDocuemts(documents);
