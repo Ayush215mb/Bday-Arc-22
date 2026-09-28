@@ -1,0 +1,29 @@
+{
+    "name": "guardrails",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "agent": "tsx src/agent.ts"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devEngines": {
+        "packageManager": {
+            "name": "pnpm",
+            "version": "12.6.0",
+            "onFail": "download"
+        }
+    },
+    "packageManager": "pnpm@12.6.0",
+    "type": "module",
+    "dependencies": {
+        "@langchain/core": "^1.2.13",
+        "@langchain/ollama": "^1.3.0",
+        "langchain": "^1.5.14"
+    },
+    "devDependencies": {
+        "tsx": "^4.23.15"
+    }
+}
