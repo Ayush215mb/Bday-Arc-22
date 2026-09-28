@@ -1,7 +1,7 @@
 import { ChromaClient, CloudClient } from "chromadb";
 import { pipeline } from "@huggingface/transformers";
 import { createHash } from "crypto";
-import { chunks } from "./ingestData";
+import { chunks } from "./data-loader";
 
 const client = new ChromaClient();
 

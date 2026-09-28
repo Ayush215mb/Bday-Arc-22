@@ -5,9 +5,9 @@
     "main": "index.js",
     "scripts": {
         "doc": "tsx src/document.ts",
-        "ingest": "tsx src/ingestData.ts",
+        "loadData": "tsx src/data-loader.ts",
         "embed": "tsx src/embedding.ts",
-        "llm": "tsx src/llm.ts"
+        "rag": "tsx src/rag.ts"
     },
     "keywords": [],
     "author": "",
