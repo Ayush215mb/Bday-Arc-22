@@ -2,6 +2,7 @@ import { createAgent } from "langchain";
 import { ChatOllama } from "@langchain/ollama";
 import { piiMiddleware } from "./guardrails/pii-middleware";
 import { illegalRequestMiddleware } from "./guardrails/illegal-req-middleware";
+
 const llm = new ChatOllama({
     model: "qwen3.5:9b",
     numCtx: 25000,
