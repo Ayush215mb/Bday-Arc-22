@@ -7,7 +7,7 @@ export default function RootLayout() {
         <QueryProvider>
             <Stack screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="index" />
-                <Stack.Screen name="Lists" />
+                <Stack.Screen name="(screens)" />
             </Stack>
         </QueryProvider>
     );
