@@ -4,10 +4,13 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "cli": "tsx scripts/cli.ts",
+        "dev:api": "pnpm --filter @trip-planner/api dev",
+        "dev:agent": "pnpm --filter @trip-planner/agent dev",
+        "typecheck": "pnpm -r typecheck"
     },
     "keywords": [],
-    "author": "",
+    "author": "glevoidd",
     "license": "ISC",
     "devEngines": {
         "packageManager": {
@@ -18,17 +21,10 @@
     },
     "packageManager": "pnpm@12.15.0",
     "type": "module",
-    "dependencies": {
-        "@langchain/core": "^1.3.0",
-        "@langchain/langgraph": "^1.5.2",
-        "@langchain/ollama": "^1.3.0",
-        "@langchain/tavily": "^1.2.0",
-        "deepagents": "^1.15.1",
-        "dotenv": "^18.0.9",
-        "langchain": "^1.5.19",
-        "zod": "^4.6.7"
-    },
     "devDependencies": {
+        "@trip-planner/agent": "workspace:*",
+        "@langchain/langgraph": "^1.5.2",
+        "dotenv": "^18.0.9",
         "@types/node": "^26.6.5",
         "tsx": "^4.23.15",
         "typescript": "^7.0.2"

@@ -1,0 +1,8 @@
+{
+    "node_version": "22",
+    "dependencies": ["."],
+    "graphs": {
+        "trip_planner": "./src/graph.ts:graph"
+    },
+    "env": "../../.env"
+}
