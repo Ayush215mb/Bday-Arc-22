@@ -6,7 +6,7 @@ export const currencyConversionTool = tool(
     async ({ amount, from, to }) =>
         JSON.stringify(await convertCurrency(amount, from, to)),
     {
-        name: "convert_currency",
+        name: "currencyConversionTool",
         description:
             "Convert an amount between currencies using ISO codes like USD, INR.",
         schema: z.object({

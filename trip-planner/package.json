@@ -7,6 +7,7 @@
         "cli": "tsx scripts/cli.ts",
         "dev:api": "pnpm --filter @trip-planner/api dev",
         "dev:agent": "pnpm --filter @trip-planner/agent dev",
+        "start:agent": "pnpm --filter @trip-planner/agent start",
         "typecheck": "pnpm -r typecheck"
     },
     "keywords": [],

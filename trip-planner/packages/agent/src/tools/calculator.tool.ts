@@ -12,7 +12,7 @@ export const calculatorTool = tool(
         return String(ops[op]);
     },
     {
-        name: "calculator",
+        name: "calculatorTool",
         description: "Basic arithmetic for budgets and totals.",
         schema: z.object({
             op: z.enum(["add", "subtract", "multiply", "divide"]),
