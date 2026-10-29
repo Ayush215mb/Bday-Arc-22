@@ -4,7 +4,13 @@ import { getWeather } from "../services/get-weather";
 
 export const weatherInfoTool = tool(
     async ({ location, startDate, endDate }) => {
-        return getWeather({ location, startDate, endDate });
+        try {
+            return JSON.stringify(
+                await getWeather({ location, startDate, endDate }),
+            );
+        } catch (e) {
+            return `Error: ${e instanceof Error ? e.message : "weather apis failed"}`;
+        }
     },
     {
         name: "weatherInfoTool",

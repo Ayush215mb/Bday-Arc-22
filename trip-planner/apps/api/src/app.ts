@@ -7,6 +7,7 @@ import { tripRoutes } from "./routes/trip";
 const agent = createTripPlannerAgent({
     tavilyApiKey: env.TAVILY_API_KEY,
     ollamaBaseUrl: env.OLLAMA_BASE_URL,
+    openTripMapApiKey: env.OPEN_TRIP_API_KEY!,
 });
 
 export const app = new Hono()
