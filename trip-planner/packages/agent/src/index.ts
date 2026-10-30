@@ -8,18 +8,21 @@ import { calculatorTool } from "./tools/calculator.tool";
 import "dotenv/config";
 import { weatherInfoTool } from "./tools/weather-info.tool.ts";
 import { placeSearchTool } from "./tools/place-search.tool.ts";
+import z from "zod";
 export interface AgentOptions {
     tavilyApiKey?: string;
-    openTripMapApiKey: string;
+    GEOAPIFY_API_KEY: string;
     ollamaBaseUrl?: string;
     model?: string;
     checkpointer?: BaseCheckpointSaver;
+    responseFormat: z.ZodObject;
 }
 
 export function createTripPlannerAgent(opts: AgentOptions) {
     const search = new TavilySearch({
         tavilyApiKey: opts.tavilyApiKey,
-        maxResults: 5,
+        searchDepth: "basic",
+        maxResults: 3,
     });
 
     return createAgent({
@@ -29,28 +32,36 @@ export function createTripPlannerAgent(opts: AgentOptions) {
             currencyConversionTool,
             calculatorTool,
             weatherInfoTool,
-            placeSearchTool(opts.openTripMapApiKey),
+            placeSearchTool(opts.GEOAPIFY_API_KEY),
         ],
         systemPrompt: SYSTEM_PROMPT,
         checkpointer: opts.checkpointer ?? new MemorySaver(),
+        responseFormat: opts.responseFormat,
     });
 }
 
 export type TripAgent = ReturnType<typeof createTripPlannerAgent>;
 
-// const config = { configurable: { thread_id: "session-2" } };
+// const config = { configurable: { thread_id: "session-3" }, recursionLimit: 60 };
 
 // const result = createTripPlannerAgent({
 //     tavilyApiKey: process.env.TAVILY_API_KEY!,
-//     openTripMapApiKey: process.env.OPEN_TRIP_API_KEY!,
+//     GEOAPIFY_API_KEY: process.env.GEOAPIFY_API_KEY!,
 //     model: existingModels.gemma,
+//     responseFormat: z.object({
+//         days: z.string().describe("eg. day 0, day 1 and so forth"),
+//         activities: z.string().describe("activity planned for that day"),
+//         cost: z.string().describe("the cost of that activity"),
+//         location: z.string().describe("the location of the activity"),
+//         time: z.string().describe("time allotted for the activity"),
+//     }),
 // }).invoke(
 //     {
 //         messages: [
 //             {
 //                 role: "user",
 //                 content:
-//                     "Plan a 15 day trip for 5 people in INDIA under the budget of $10000. Include all the famous tourist spots, live shows, sports event if any and cultural heritages. we are planing the trip from 01 dec 2026 to 16 dec 2026.",
+//                     "use the findplaces tool to find 5 places to visit in india. DO NOT USE TAVILY SEARCH",
 //             },
 //         ],
 //     },

@@ -10,7 +10,7 @@ export const tripRoutes = (agent: TripAgent) =>
             const { threadId, message } = c.req.valid("json");
             const result = await agent.invoke(
                 { messages: [{ role: "user", content: message }] },
-                { configurable: { thread_id: threadId } },
+                { configurable: { thread_id: threadId }, recursionLimit: 60 },
             );
             const last = result.messages.at(-1);
             return c.json({ threadId, reply: last?.content });

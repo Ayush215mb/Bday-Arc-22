@@ -17,17 +17,17 @@
     "devEngines": {
         "packageManager": {
             "name": "pnpm",
-            "version": "12.15.0",
+            "version": "12.16.1",
             "onFail": "download"
         }
     },
-    "packageManager": "pnpm@12.15.0",
+    "packageManager": "pnpm@12.16.1",
     "type": "module",
     "devDependencies": {
-        "@trip-planner/agent": "workspace:*",
         "@langchain/langgraph": "^1.5.2",
-        "dotenv": "^18.0.9",
+        "@trip-planner/agent": "workspace:*",
         "@types/node": "^26.6.5",
+        "dotenv": "^18.0.9",
         "tsx": "^4.23.15",
         "typescript": "^7.0.2"
     }

@@ -1,11 +1,11 @@
 import { tool } from "langchain";
 import z from "zod";
 import { findFamousPlaces } from "../services/find-famous-places";
-export const placeSearchTool = (apikey: string) =>
+export const placeSearchTool = (apiKey: string) =>
     tool(
         async ({ city }) => {
             try {
-                return JSON.stringify(await findFamousPlaces(city, apikey));
+                return JSON.stringify(await findFamousPlaces({ city, apiKey }));
             } catch (e) {
                 return `Error: ${e instanceof Error ? e.message : "place lookup failed"}`;
             }
