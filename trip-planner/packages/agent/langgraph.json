@@ -2,7 +2,7 @@
     "node_version": "22",
     "dependencies": ["."],
     "graphs": {
-        "trip_planner": "./src/graph.ts:graph"
+        "trip_planner": "./src/graph/index.ts:graph"
     },
     "env": "../../.env"
 }

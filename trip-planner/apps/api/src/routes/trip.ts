@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { streamSSE } from "hono/streaming";
 import { zValidator } from "@hono/zod-validator";
 import type { TripAgent } from "@trip-planner/agent";
-import { planSchema } from "../schemas/plan.js";
+import { planSchema } from "../schemas/plan.schema.js";
 
 export const tripRoutes = (agent: TripAgent) =>
     new Hono()

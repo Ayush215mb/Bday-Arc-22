@@ -3,9 +3,11 @@ import z from "zod";
 import { findFamousPlaces } from "../services/find-famous-places";
 export const placeSearchTool = (apiKey: string) =>
     tool(
-        async ({ city }) => {
+        async ({ destination, categories }) => {
             try {
-                return JSON.stringify(await findFamousPlaces({ city, apiKey }));
+                return JSON.stringify(
+                    await findFamousPlaces({ destination, apiKey, categories }),
+                );
             } catch (e) {
                 return `Error: ${e instanceof Error ? e.message : "place lookup failed"}`;
             }
@@ -15,7 +17,11 @@ export const placeSearchTool = (apiKey: string) =>
             description:
                 "To Search the famous tourist attraction of a location",
             schema: z.object({
-                city: z.string(),
+                destination: z.string(),
+                categories: z
+                    .string()
+                    .array()
+                    .describe("User's interests for the trip"),
             }),
         },
     );

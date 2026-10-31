@@ -1,9 +1,21 @@
 import z from "zod";
-
-export const itinarySchema = z.object({
-    days: z.string().describe("eg. day 0, day 1 and so forth"),
-    activities: z.string().describe("activity planned for that day"),
-    cost: z.string().describe("the cost of that activity"),
-    location: z.string().describe("the location of the activity"),
-    time: z.string().describe("time allotted for the activity"),
+export const ItinerarySchema = z.object({
+    destination: z.string(),
+    summary: z.string(),
+    totalEstimatedCost: z.object({ amount: z.number(), currency: z.string() }),
+    weatherNote: z.string().nullable(),
+    days: z.array(
+        z.object({
+            day: z.number(),
+            title: z.string(),
+            activities: z.array(
+                z.object({
+                    time: z.string(),
+                    name: z.string(),
+                    description: z.string(),
+                    estimatedCost: z.number().nullable(),
+                }),
+            ),
+        }),
+    ),
 });

@@ -1,17 +1,15 @@
 import { ChatOllama } from "@langchain/ollama";
+import { existingModels } from "./existingModels";
 
-export const existingModels = {
-    qwen: "qwen3.5:9b",
-    omnicoder: "omnicoder-2:9b",
-    gemma: "gemma4:12b",
-};
-
-export function loadModel(opts: { model?: string; baseUrl?: string }) {
+export function loadModel(opts: {
+    model?: string;
+    baseUrl?: string;
+    thinking?: boolean;
+}) {
     return new ChatOllama({
-        model: opts.model ?? "qwen3.5:9b",
+        model: opts.model ?? existingModels.gemma,
         baseUrl: opts.baseUrl ?? "http://localhost:11434",
-        numCtx: 30000,
-        temperature: 0.2,
-        think: false,
+        think: opts.thinking ?? true,
+        numCtx: 10000,
     });
 }

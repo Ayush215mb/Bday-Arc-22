@@ -22,27 +22,26 @@ export const DEFAULT_CATEGORIES = [
     "leisure.park",
 ];
 interface FindPlacesOptions {
-    city: string;
+    destination: string;
     apiKey: string;
     categories?: string[];
     limit?: number;
     radiusM?: number;
 }
 export async function findFamousPlaces({
-    city,
+    destination,
     apiKey,
     categories = DEFAULT_CATEGORIES,
     limit = 10,
     radiusM = 15000,
 }: FindPlacesOptions): Promise<{ location: string; places: Place[] }> {
-    const { lat, lon, name } = await geocode(city);
+    const { lat, lon, name } = await geocode(destination);
     if (!apiKey) throw new Error("GEOAPIFY_API_KEY is missing");
-    console.log("inside findFamousPlaces: ", lat, lon, name, apiKey);
     const params = new URLSearchParams({
         categories: categories.join(","),
-        filter: `circle:${lon},${lat},${radiusM}`, // lon first, then lat
+        filter: `circle:${lon},${lat},${radiusM}`,
         bias: `proximity:${lon},${lat}`,
-        limit: String(limit * 2), // over-fetch, since unnamed results get filtered out
+        limit: String(limit * 2),
         apiKey,
     });
 
@@ -50,7 +49,6 @@ export async function findFamousPlaces({
         method: "GET",
         redirect: "follow",
     });
-    console.log("inside findFamousPlaces2: ", res);
 
     if (!res.ok) throw new Error(`Places API failed: ${res.status}`);
 
