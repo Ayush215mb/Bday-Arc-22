@@ -1,35 +1,56 @@
-import { StateGraph, START, END } from "@langchain/langgraph";
+import {
+    StateGraph,
+    START,
+    END,
+    MemorySaver,
+} from "@langchain/langgraph";
 import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { AIMessage } from "@langchain/core/messages";
-import { State, type S } from "./state";
+import { State, MAX_REFINES, type S } from "./state";
 import * as n from "./nodes";
 
-type Next = "currency" | "weather" | "places" | typeof END;
-
 const route = {
-    afterExtract: (s: S): Next | Next[] =>
-        s.question ? END : ["currency", "weather", "places"],
-    afterPlanner: (s: S) => {
-        const last = s.messages.at(-1) as AIMessage;
-        return last?.tool_calls?.length ? "tools" : "format";
+    afterDraft: (s: S): "tools" | "validate" => {
+        // Prefer itinerary when present — old tool_call messages can linger after refine.
+        if (s.itinerary) return "validate";
+        const last = s.messages.at(-1);
+        if (
+            last instanceof AIMessage &&
+            Array.isArray(last.tool_calls) &&
+            last.tool_calls.length > 0
+        ) {
+            return "tools";
+        }
+        return "validate";
+    },
+    afterValidate: (s: S): "refine" | typeof END => {
+        const over = s.budgetCheck && !s.budgetCheck.withinBudget;
+        if (over && s.refineCount < MAX_REFINES) return "refine";
+        return END;
     },
 };
+
 export const graph = new StateGraph(State)
     .addNode("extract", n.extractNode)
-    .addNode("convert_currency", n.currencyNode)
-    .addNode("get_weather", n.weatherNode)
-    .addNode("find_places", n.placesNode)
-    .addNode("planner", n.plannerNode)
+    .addNode("clarify", n.clarifyNode)
+    .addNode("gather", n.gatherNode)
+    .addNode("draft", n.draftNode)
     .addNode("tools", new ToolNode([n.tavily]))
-    .addNode("format", n.formatNode)
+    .addNode("validate", n.validateNode)
+    .addNode("refine", n.refineNode)
 
     .addEdge(START, "extract")
-    .addConditionalEdges("extract", route.afterExtract)
-    .addEdge(["convert_currency", "get_weather", "find_places"], "planner")
-    .addConditionalEdges("planner", route.afterPlanner, {
+    .addEdge("extract", "clarify")
+    .addEdge("clarify", "gather")
+    .addEdge("gather", "draft")
+    .addConditionalEdges("draft", route.afterDraft, {
         tools: "tools",
-        format: "format",
+        validate: "validate",
     })
-    .addEdge("tools", "planner")
-    .addEdge("format", END)
-    .compile();
+    .addEdge("tools", "draft")
+    .addConditionalEdges("validate", route.afterValidate, {
+        refine: "refine",
+        [END]: END,
+    })
+    .addEdge("refine", "draft")
+    .compile({ checkpointer: new MemorySaver() });

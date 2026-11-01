@@ -42,14 +42,47 @@ export const ItinerarySchema = z.object({
     ),
 });
 
+export type TripRequestT = z.infer<typeof TripRequest>;
+export type ItineraryT = z.infer<typeof ItinerarySchema>;
+
+export type BudgetCheck = {
+    total: number;
+    limit: number;
+    currency: string;
+    withinBudget: boolean;
+    overBy: number;
+};
+
+const replace = <T>(defaultValue: T) => ({
+    reducer: (_prev: T, next: T) => next,
+    default: () => defaultValue,
+});
+
 export const State = Annotation.Root({
     ...MessagesAnnotation.spec,
-    userInput: Annotation<string>(),
-    request: Annotation<z.infer<typeof TripRequest> | null>(),
-    currency: Annotation<unknown | null>(),
-    weather: Annotation<unknown | null>(),
-    places: Annotation<unknown | null>(),
-    itinerary: Annotation<z.infer<typeof ItinerarySchema> | null>(),
-    question: Annotation<string | null>(),
+    /** Preferred free-text input. Also derived from messages / message. */
+    userInput: Annotation<string, string>(replace("")),
+    /** Studio-friendly alias: `{ "message": "..." }` */
+    message: Annotation<string | undefined, string | undefined>(
+        replace(undefined),
+    ),
+    request: Annotation<TripRequestT | null, TripRequestT | null>(
+        replace(null),
+    ),
+    currency: Annotation<unknown | null, unknown | null>(replace(null)),
+    weather: Annotation<unknown | null, unknown | null>(replace(null)),
+    places: Annotation<unknown | null, unknown | null>(replace(null)),
+    itinerary: Annotation<ItineraryT | null, ItineraryT | null>(replace(null)),
+    question: Annotation<string | null, string | null>(replace(null)),
+    budgetLimitLocal: Annotation<number | null, number | null>(replace(null)),
+    budgetCheck: Annotation<BudgetCheck | null, BudgetCheck | null>(
+        replace(null),
+    ),
+    refineCount: Annotation<number, number>(replace(0)),
+    refineFeedback: Annotation<string | null, string | null>(replace(null)),
 });
+
 export type S = typeof State.State;
+
+export const MAX_SEARCHES = 2;
+export const MAX_REFINES = 2;

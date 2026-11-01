@@ -36,7 +36,9 @@ export async function findFamousPlaces({
     radiusM = 15000,
 }: FindPlacesOptions): Promise<{ location: string; places: Place[] }> {
     const { lat, lon, name } = await geocode(destination);
+    console.log(categories);
     if (!apiKey) throw new Error("GEOAPIFY_API_KEY is missing");
+
     const params = new URLSearchParams({
         categories: categories.join(","),
         filter: `circle:${lon},${lat},${radiusM}`,
