@@ -6,8 +6,10 @@
     "scripts": {
         "cli": "tsx scripts/cli.ts",
         "dev:api": "pnpm --filter @trip-planner/api dev",
+        "dev:web": "pnpm --filter @trip-planner/web dev",
         "dev:agent": "pnpm --filter @trip-planner/agent dev",
         "start:api": "pnpm --filter @trip-planner/api start",
+        "build:web": "pnpm --filter @trip-planner/web build",
         "test:agent": "pnpm --filter @trip-planner/agent test",
         "typecheck": "pnpm -r typecheck"
     },
