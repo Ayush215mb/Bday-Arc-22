@@ -1,4 +1,3 @@
-export const EXTRACT_PROMPT = `Extract trip details from the user's message.
-Use null for anything not stated. Never guess destinations, dates, budgets, or currencies.
-Interests should be a short list of topics the user mentioned (food, temples, hiking, etc.).
-If they gave no interests, return an empty array.`;
+export const EXTRACT_PROMPT = `Convert the research notes into the schema.
+Use ONLY facts present in the notes. Copy numbers from tool outputs; do not recompute.
+Use null where unknown, and put essential gaps in missingInfo.`;

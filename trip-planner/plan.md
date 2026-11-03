@@ -5,7 +5,7 @@ Here are features that fit your current architecture, ordered by payoff. The fir
 - Right now the agent returns free text. Add a zod `ItinerarySchema` (days → activities → cost, location, time) and use `withStructuredOutput` or a final formatting node.
 - This unlocks a frontend, a PDF export and budget validation, and it makes the later features easy to build.
 
-**2.[WORKING] Real graph instead of one ReAct loop**
+**2.[ON HOLD] Real graph instead of one ReAct loop**
 
 - `agentic-workflow.ts` is empty, so this is where it belongs. Use a LangGraph pipeline: `parse intent → gather (parallel tools) → draft → validate budget → refine`.
 - Add a budget-check node that loops back to the draft if the total exceeds the user's limit. Your calculator and currency tools finally do real work there.

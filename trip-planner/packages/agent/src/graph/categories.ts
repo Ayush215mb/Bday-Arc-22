@@ -1,4 +1,3 @@
-/** Geoapify Places category fallbacks (same as service defaults). */
 export const DEFAULT_GEOAPIFY_CATEGORIES = [
     "tourism.attraction",
     "tourism.sights",
@@ -6,10 +5,6 @@ export const DEFAULT_GEOAPIFY_CATEGORIES = [
     "leisure.park",
 ];
 
-/**
- * Map free-text interests → Geoapify category strings.
- * Passing raw interests like "food" to Geoapify causes 400s.
- */
 const INTEREST_MAP: Record<string, string[]> = {
     food: ["catering.restaurant", "catering.cafe", "catering.fast_food"],
     restaurants: ["catering.restaurant"],
@@ -72,7 +67,7 @@ export function mapInterestsToGeoapify(interests: string[]): string[] {
             for (const c of hit) mapped.add(c);
             continue;
         }
-        // substring match: "temple hopping" → temples
+
         for (const [alias, cats] of Object.entries(INTEREST_MAP)) {
             if (key.includes(alias)) {
                 for (const c of cats) mapped.add(c);

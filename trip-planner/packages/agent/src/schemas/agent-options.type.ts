@@ -4,9 +4,10 @@ import z from "zod";
 export interface AgentOptions {
     tavilyApiKey: string;
     GEOAPIFY_API_KEY: string;
-    ollamaBaseUrl?: string;
     model?: string;
+    thinking?: boolean;
+    ollamaBaseUrl?: string;
     checkpointer?: BaseCheckpointSaver;
     responseFormat: z.ZodObject;
-    fastModel?: string;
+    systemPrompt: string;
 }

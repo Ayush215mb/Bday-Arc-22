@@ -29,20 +29,20 @@ Managed with **pnpm** workspaces (`apps/*`, `packages/*`).
 
 Core planning logic. Two entry points today:
 
-| Path | What it is |
-|------|------------|
-| `src/index.ts` | ReAct agent via `createAgent` — used by the API and CLI today |
-| `src/graph/` | LangGraph pipeline: extract → gather tools in parallel → plan → format |
+| Path           | What it is                                                             |
+| -------------- | ---------------------------------------------------------------------- |
+| `src/index.ts` | ReAct agent via `createAgent` — used by the API and CLI today          |
+| `src/graph/`   | LangGraph pipeline: extract → gather tools in parallel → plan → format |
 
 **Agent tools**
 
-| Tool | Role |
-|------|------|
-| `TavilySearch` | Live web search (events, openings, fallback facts) |
-| `placeSearchTool` | Attractions via Geoapify Places (+ geocode) |
-| `weatherInfoTool` | Forecast for trip dates |
-| `currencyConversionTool` | Budget FX conversion |
-| `calculatorTool` | Arithmetic / budget totals |
+| Tool                     | Role                                               |
+| ------------------------ | -------------------------------------------------- |
+| `TavilySearch`           | Live web search (events, openings, fallback facts) |
+| `placeSearchTool`        | Attractions via Geoapify Places (+ geocode)        |
+| `weatherInfoTool`        | Forecast for trip dates                            |
+| `currencyConversionTool` | Budget FX conversion                               |
+| `calculatorTool`         | Arithmetic / budget totals                         |
 
 **Models** (Ollama): `gemma4:12b` (planner), `qwen3.5:9b` (fast extract / format), `omnicoder-2:9b` available.
 
@@ -52,18 +52,18 @@ Core planning logic. Two entry points today:
 
 Hono server on port `3000` (configurable). Wires the agent with structured `ItinerarySchema` output.
 
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/health` | Health check |
-| `POST` | `/trip/plan` | Plan a trip; returns full reply |
+| Method | Path           | Description                                           |
+| ------ | -------------- | ----------------------------------------------------- |
+| `GET`  | `/health`      | Health check                                          |
+| `POST` | `/trip/plan`   | Plan a trip; returns full reply                       |
 | `POST` | `/trip/stream` | Same request; streams SSE `token` events, then `done` |
 
 **Request body** (`/trip/plan`, `/trip/stream`):
 
 ```json
 {
-  "threadId": "optional-uuid",
-  "message": "Plan 5 days in Kyoto under ¥80000, food and temples"
+    "threadId": "optional-uuid",
+    "message": "Plan 5 days in Kyoto under ¥80000, food and temples"
 }
 ```
 
@@ -107,14 +107,14 @@ Optional: LangSmith (`LANGSMITH_TRACING`, `LANGSMITH_API_KEY`, `LANGSMITH_PROJEC
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev:api` | API with hot reload |
-| `pnpm start:api` | API without watch |
-| `pnpm dev:agent` | LangGraph CLI / Studio for the graph |
-| `pnpm cli` | Interactive CLI planner |
-| `pnpm test:agent` | Agent smoke test |
-| `pnpm typecheck` | Typecheck all packages |
+| Command           | Description                          |
+| ----------------- | ------------------------------------ |
+| `pnpm dev:api`    | API with hot reload                  |
+| `pnpm start:api`  | API without watch                    |
+| `pnpm dev:agent`  | LangGraph CLI / Studio for the graph |
+| `pnpm cli`        | Interactive CLI planner              |
+| `pnpm test:agent` | Agent smoke test                     |
+| `pnpm typecheck`  | Typecheck all packages               |
 
 ---
 
@@ -143,7 +143,7 @@ The API still mounts the ReAct `createTripPlannerAgent` path; wiring it to the c
 
 Ordered by payoff. Weekend priority: **1 → 2 → 3**.
 
-### 1. Structured itinerary output *(highest leverage)*
+### 1. Structured itinerary output _(highest leverage)_
 
 - Zod `ItinerarySchema` already exists; make it the contract everywhere (`withStructuredOutput` / format node).
 - Unlocks frontend, PDF export, and budget validation.
@@ -178,21 +178,6 @@ Ordered by payoff. Weekend priority: **1 → 2 → 3**.
 - Map view with day-wise pins from geocode
 - Export PDF / `.ics`
 - Shareable trip links
-
-### 7. Stretch
-
-- Multi-agent split (planner / budget / logistics + supervisor)
-- RAG over local travel corpus (guides, festivals)
-- MCP server exposing weather / places / currency tools
-- Group planning (merge several users’ preferences)
-
----
-
-## Known issues
-
-- **find-famous-places** can return **400** when the Geoapify `categories` array is not opened/joined correctly for the API — fix category serialization before relying on place search in production.
-
----
 
 ## Example prompt
 

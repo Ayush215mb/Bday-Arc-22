@@ -3,54 +3,42 @@ import {
     START,
     END,
     MemorySaver,
+    interrupt,
 } from "@langchain/langgraph";
-import { ToolNode } from "@langchain/langgraph/prebuilt";
-import { AIMessage } from "@langchain/core/messages";
-import { State, MAX_REFINES, type S } from "./state";
-import * as n from "./nodes";
+import { State, type S } from "./state";
+import { draft_node, plan_node, research_node } from "./nodes";
 
-const route = {
-    afterDraft: (s: S): "tools" | "validate" => {
-        // Prefer itinerary when present — old tool_call messages can linger after refine.
-        if (s.itinerary) return "validate";
-        const last = s.messages.at(-1);
-        if (
-            last instanceof AIMessage &&
-            Array.isArray(last.tool_calls) &&
-            last.tool_calls.length > 0
-        ) {
-            return "tools";
-        }
-        return "validate";
-    },
-    afterValidate: (s: S): "refine" | typeof END => {
-        const over = s.budgetCheck && !s.budgetCheck.withinBudget;
-        if (over && s.refineCount < MAX_REFINES) return "refine";
-        return END;
-    },
+const MAX_ASKS = 2;
+
+const ask_user_node = async (state: S) => {
+    // pauses the graph; the value passed to Command({ resume }) comes back here
+    const answer = interrupt({
+        type: "missing_info",
+        questions: state.research?.missingInfo ?? [],
+    });
+
+    return {
+        userInput: `${state.userInput}\n\nAdditional details from the user: ${String(answer)}`,
+        askCount: state.askCount + 1,
+    };
 };
 
-export const graph = new StateGraph(State)
-    .addNode("extract", n.extractNode)
-    .addNode("clarify", n.clarifyNode)
-    .addNode("gather", n.gatherNode)
-    .addNode("draft", n.draftNode)
-    .addNode("tools", new ToolNode([n.tavily]))
-    .addNode("validate", n.validateNode)
-    .addNode("refine", n.refineNode)
+const routeAfterResearch = (s: S): "ask_user_node" | "plan_node" =>
+    (s.research?.missingInfo.length ?? 0) > 0 && s.askCount < MAX_ASKS
+        ? "ask_user_node"
+        : "plan_node";
 
-    .addEdge(START, "extract")
-    .addEdge("extract", "clarify")
-    .addEdge("clarify", "gather")
-    .addEdge("gather", "draft")
-    .addConditionalEdges("draft", route.afterDraft, {
-        tools: "tools",
-        validate: "validate",
-    })
-    .addEdge("tools", "draft")
-    .addConditionalEdges("validate", route.afterValidate, {
-        refine: "refine",
-        [END]: END,
-    })
-    .addEdge("refine", "draft")
-    .compile({ checkpointer: new MemorySaver() });
+export const graph = new StateGraph(State)
+    .addNode("draft_node", draft_node)
+    .addNode("research_node", research_node)
+    .addNode("ask_user_node", ask_user_node)
+    .addNode("plan_node", plan_node)
+    .addEdge(START, "draft_node")
+    .addEdge("draft_node", "research_node")
+    .addConditionalEdges("research_node", routeAfterResearch, [
+        "ask_user_node",
+        "plan_node",
+    ])
+    .addEdge("ask_user_node", "draft_node")
+    .addEdge("plan_node", END)
+    .compile({ checkpointer: new MemorySaver() }); // interrupt() requires a checkpointer
