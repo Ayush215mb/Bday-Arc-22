@@ -15,26 +15,26 @@ export type BudgetCheck = {
     overBy: number;
 };
 
+const withDefault = <T>(def: () => T) =>
+    Annotation<T>({ reducer: (_, next) => next, default: def });
 export const State = Annotation.Root({
     ...MessagesAnnotation.spec,
-    userInput: Annotation<string | null>,
-    message: Annotation<string | null>,
-    request: Annotation<DraftResponseT | null>,
-    currency: Annotation<string | null>,
-    weather: Annotation<string | null>,
-    places: Annotation<Array<string> | null>,
-    itinerary: Annotation<ItineraryT | null>,
-    question: Annotation<string | null>,
-    budgetLimitLocal: Annotation<number>,
-    budgetCheck: Annotation<BudgetCheck>,
-    refineCount: Annotation<number>,
-    refineFeedback: Annotation<string>,
+    userInput: Annotation<string | null>(),
+    message: Annotation<string | null>(),
+    request: Annotation<DraftResponseT | null>(),
+    currency: Annotation<string | null>(),
+    weather: Annotation<string | null>(),
+    places: Annotation<string[] | null>(),
+    itinerary: Annotation<ItineraryT | null>(),
+    question: Annotation<string | null>(),
     research: Annotation<Research | null>(),
-    response: Annotation<string>(),
-    askCount: Annotation<number>({
-        reducer: (_, next) => next,
-        default: () => 0,
-    }),
+    budgetLimitLocal: Annotation<number | null>(),
+    budgetCheck: Annotation<BudgetCheck | null>(),
+    response: withDefault<string>(() => ""),
+    refineFeedback: withDefault<string>(() => ""),
+    refineCount: withDefault<number>(() => 0),
+    searchCount: withDefault<number>(() => 0),
+    askCount: withDefault<number>(() => 0),
 });
 
 export type S = typeof State.State;

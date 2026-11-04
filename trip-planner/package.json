@@ -9,6 +9,8 @@
         "dev:web": "pnpm --filter @trip-planner/web dev",
         "dev:agent": "pnpm --filter @trip-planner/agent dev",
         "start:api": "pnpm --filter @trip-planner/api start",
+        "start:agent": "pnpm --filter @trip-planner/agent start:agent",
+        "start:graph": "pnpm --filter @trip-planner/agent start:graph",
         "build:web": "pnpm --filter @trip-planner/web build",
         "test:agent": "pnpm --filter @trip-planner/agent test",
         "typecheck": "pnpm -r typecheck"

@@ -9,5 +9,5 @@ export interface AgentOptions {
     ollamaBaseUrl?: string;
     checkpointer?: BaseCheckpointSaver;
     responseFormat: z.ZodObject;
-    systemPrompt: string;
+    systemPrompt?: string;
 }

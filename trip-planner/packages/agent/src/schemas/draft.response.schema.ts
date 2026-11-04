@@ -3,9 +3,9 @@ import z from "zod";
 export const DraftResponseSchema = z.object({
     destination: z
         .string()
-        .nullable()
-        .describe("City or country, null if not stated"),
-    days: z.number().nullable(),
+        .min(1)
+        .describe("City or place the user wants to visit"),
+    days: z.number(),
     startDate: z
         .string()
         .nullable()

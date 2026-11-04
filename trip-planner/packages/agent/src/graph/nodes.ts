@@ -60,11 +60,12 @@ export const draft_node = async (state: S) => {
         thinking: false,
     }).withStructuredOutput(DraftResponseSchema);
 
-    // if (!state.userInput) throw new Error("User Query not found");
+    if (!state.userInput) throw new Error("User Query not found");
 
     const result = await draft_model.invoke([
         new SystemMessage(DRAFT_PROMPT),
-        ...state.messages,
+        //...state.messages
+        new HumanMessage(state.userInput),
     ]);
 
     return { request: result };
@@ -95,19 +96,21 @@ export const research_node = async (state: S) => {
     const agent = createTripPlannerAgent({
         tavilyApiKey: TAVILY_API_KEY!,
         GEOAPIFY_API_KEY: GEOAPIFY_API_KEY!,
-        model: existingModels.gemma,
+        model: existingModels.qwen,
         thinking: false,
         responseFormat: ItinerarySchema,
-        systemPrompt: RESEARCH_PROMPT,
     });
 
     const run = await agent.invoke(
         {
             messages: [
+                new SystemMessage(RESEARCH_PROMPT),
                 new HumanMessage(`Trip request:\n${tripJson}\n\n${dataBlock}`),
             ],
         },
-        { recursionLimit: 15 },
+        {
+            recursionLimit: 30,
+        },
     );
 
     const summary = String(run.messages.at(-1)?.content ?? "");
@@ -129,7 +132,7 @@ export const research_node = async (state: S) => {
         ),
     ]);
 
-    return { research };
+    return { research: research };
 };
 
 export const plan_node = async (state: S) => {

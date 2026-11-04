@@ -1,5 +1,5 @@
 import { createAgent } from "langchain";
-import { MemorySaver, type BaseCheckpointSaver } from "@langchain/langgraph";
+import { MemorySaver } from "@langchain/langgraph";
 import { TavilySearch } from "@langchain/tavily";
 import { loadModel } from "./models/model-loader";
 import { SYSTEM_PROMPT } from "./prompts/system.prompt.ts";
@@ -9,6 +9,7 @@ import "dotenv/config";
 import { weatherInfoTool } from "./tools/weather-info.tool.ts";
 import { placeSearchTool } from "./tools/place-search.tool.ts";
 import { AgentOptions } from "./schemas/agent-options.type.ts";
+import { PostgresStore } from "@langchain/langgraph-checkpoint-postgres/store";
 
 export function createTripPlannerAgent(opts: AgentOptions) {
     const search = new TavilySearch({
