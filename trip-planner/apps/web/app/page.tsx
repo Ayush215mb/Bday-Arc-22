@@ -1,7 +1,10 @@
-export default function Home() {
+import AppShell from "@/components/layout/AppShell";
+import ChatHome from "@/components/chat/ChatHome";
+
+export default function Homepage() {
     return (
-        <div className="flex justify-center items-center min-h-full w-full">
-            <h1>Home page</h1>
-        </div>
+        <AppShell>
+            <ChatHome userName="Master" />
+        </AppShell>
     );
 }
