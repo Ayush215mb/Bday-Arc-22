@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { ChatWindow } from "@/components/chat/ChatWindow";
 
 export const metadata: Metadata = { title: "Plan a trip" };
 
 export default function PlanPage() {
-    return <ChatWindow />;
+    return (
+        <div>
+            <h1>Agent chatbot</h1>
+        </div>
+    );
 }
