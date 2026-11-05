@@ -1,5 +1,5 @@
 import { ChatOllama } from "@langchain/ollama";
-import { existingModels } from "./existingModels";
+import { existingModels } from "../schemas";
 
 export function loadModel(opts: {
     model?: string;

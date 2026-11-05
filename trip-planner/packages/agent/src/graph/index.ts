@@ -11,7 +11,6 @@ import { draft_node, plan_node, research_node } from "./nodes";
 const MAX_ASKS = 2;
 
 const ask_user_node = async (state: S) => {
-    // pauses the graph; the value passed to Command({ resume }) comes back here
     const answer = interrupt({
         type: "missing_info",
         questions: state.research?.missingInfo ?? [],
@@ -28,7 +27,7 @@ const routeAfterResearch = (s: S): "ask_user_node" | "plan_node" =>
         ? "ask_user_node"
         : "plan_node";
 
-export const graph = new StateGraph(State)
+export const Graph = new StateGraph(State)
     .addNode("draft_node", draft_node)
     .addNode("research_node", research_node)
     .addNode("ask_user_node", ask_user_node)
@@ -41,4 +40,6 @@ export const graph = new StateGraph(State)
     ])
     .addEdge("ask_user_node", "draft_node")
     .addEdge("plan_node", END)
-    .compile({ checkpointer: new MemorySaver() }); // interrupt() requires a checkpointer
+    .compile({ checkpointer: new MemorySaver() });
+
+export type TripGraph = typeof Graph;

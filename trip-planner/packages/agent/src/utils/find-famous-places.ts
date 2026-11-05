@@ -1,4 +1,4 @@
-import { geocode } from "../utils/geocode";
+import { geocode } from "./geocode";
 
 const BASE = "https://api.geoapify.com/v2/places";
 
@@ -36,7 +36,9 @@ export async function findFamousPlaces({
     radiusM = 15000,
 }: FindPlacesOptions): Promise<{ location: string; places: Place[] }> {
     const { lat, lon, name } = await geocode(destination);
-    console.log(categories);
+
+    if (!lat || !lon) throw new Error("Geocoding failed");
+
     if (!apiKey) throw new Error("GEOAPIFY_API_KEY is missing");
 
     const params = new URLSearchParams({

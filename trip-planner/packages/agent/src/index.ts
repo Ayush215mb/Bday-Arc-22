@@ -1,40 +1,34 @@
-import { createAgent } from "langchain";
-import { MemorySaver } from "@langchain/langgraph";
-import { TavilySearch } from "@langchain/tavily";
-import { loadModel } from "./models/model-loader";
-import { SYSTEM_PROMPT } from "./prompts/system.prompt.ts";
-import { currencyConversionTool } from "./tools/currency-conversion.tool.ts";
-import { calculatorTool } from "./tools/calculator.tool";
-import "dotenv/config";
-import { weatherInfoTool } from "./tools/weather-info.tool.ts";
-import { placeSearchTool } from "./tools/place-search.tool.ts";
-import { AgentOptions } from "./schemas/agent-options.type.ts";
-import { PostgresStore } from "@langchain/langgraph-checkpoint-postgres/store";
+import { PostgresSaver } from "@langchain/langgraph-checkpoint-postgres";
+import { createTripPlannerAgent } from "./agent";
+import { existingModels, ItineraryItemSchema } from "./schemas";
+import { HumanMessage } from "langchain";
 
-export function createTripPlannerAgent(opts: AgentOptions) {
-    const search = new TavilySearch({
-        tavilyApiKey: opts.tavilyApiKey,
-        searchDepth: "basic",
-        maxResults: 3,
-    });
+const config = { configurable: { thread_id: "test-001" }, recursionLimit: 60 };
 
-    return createAgent({
-        model: loadModel({
-            model: opts.model,
-            thinking: opts.thinking,
-            baseUrl: opts.ollamaBaseUrl,
-        }),
-        tools: [
-            search,
-            currencyConversionTool,
-            calculatorTool,
-            weatherInfoTool,
-            placeSearchTool(opts.GEOAPIFY_API_KEY),
+const db_url = process.env.DIRECT_URL;
+
+if (!db_url) throw new Error("db url not found");
+
+const checkpointer = PostgresSaver.fromConnString(db_url, {
+    schema: "langgraph",
+});
+await checkpointer.setup();
+
+const result = await createTripPlannerAgent({
+    tavilyApiKey: process.env.TAVILY_API_KEY!,
+    GEOAPIFY_API_KEY: process.env.GEOAPIFY_API_KEY!,
+    model: existingModels.gemma,
+    thinking: false,
+    systemPrompt: "",
+    responseFormat: ItineraryItemSchema,
+    checkpointer: checkpointer,
+}).invoke(
+    {
+        messages: [
+            new HumanMessage("plan a 2 day trip to japan in 3 lakhs INR"),
         ],
-        systemPrompt: opts.systemPrompt,
-        checkpointer: opts.checkpointer ?? new MemorySaver(),
-        responseFormat: opts.responseFormat,
-    });
-}
+    },
+    config,
+);
 
-export type TripAgent = ReturnType<typeof createTripPlannerAgent>;
+console.log(result);

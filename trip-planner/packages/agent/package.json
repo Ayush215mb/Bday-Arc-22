@@ -4,11 +4,13 @@
     "type": "module",
     "main": "./src/index.ts",
     "exports": {
-        ".": "./src/index.ts"
+        ".": "./src/agent.ts",
+        "./graph": "./src/graph/index.ts",
+        "./schemas": "./src/schemas/index.ts"
     },
     "scripts": {
         "dev": "npx @langchain/langgraph-cli dev",
-        "start:agent": "tsx src/agent.ts",
+        "start": "tsx src/index.ts",
         "start:graph": "tsx src/graph.ts",
         "typecheck": "tsc --noEmit"
     },
