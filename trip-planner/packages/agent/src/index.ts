@@ -1,34 +1,65 @@
-import { PostgresSaver } from "@langchain/langgraph-checkpoint-postgres";
-import { createTripPlannerAgent } from "./agent";
-import { existingModels, ItineraryItemSchema } from "./schemas";
-import { HumanMessage } from "langchain";
+import { loadDeepseek, loadModel } from "./models/model-loader";
+import { DraftResponseSchema, existingModels } from "./schemas";
+import { HumanMessage, SystemMessage } from "langchain";
+import { convertCurrency } from "./services/currency-converter";
+import { prefetchPlaces } from "./services/preFetchPlaces";
 
-const config = { configurable: { thread_id: "test-001" }, recursionLimit: 60 };
+import { DRAFT_PROMPT } from "./prompts/draft.prompt";
+import { PLAN_PROMPT } from "./prompts/plan.prompt";
 
-const db_url = process.env.DIRECT_URL;
+import { WebSearchTool } from "./tools/web-search.tool";
 
-if (!db_url) throw new Error("db url not found");
-
-const checkpointer = PostgresSaver.fromConnString(db_url, {
-    schema: "langgraph",
-});
-await checkpointer.setup();
-
-const result = await createTripPlannerAgent({
-    tavilyApiKey: process.env.TAVILY_API_KEY!,
-    GEOAPIFY_API_KEY: process.env.GEOAPIFY_API_KEY!,
-    model: existingModels.gemma,
+const draftModel = loadModel({
+    model: existingModels.qwen,
     thinking: false,
-    systemPrompt: "",
-    responseFormat: ItineraryItemSchema,
-    checkpointer: checkpointer,
-}).invoke(
-    {
-        messages: [
-            new HumanMessage("plan a 2 day trip to japan in 3 lakhs INR"),
+}).withStructuredOutput(DraftResponseSchema);
+
+const finalModel = loadDeepseek({
+    model: existingModels.deepseek,
+    baseUrl: process.env.DEEPSEEK_BASE_URL,
+    apikey: process.env.DEEPSEEK_API_KEY!,
+}).bindTools([WebSearchTool]);
+const GEOAPIFY_API_KEY = process.env.GEOAPIFY_API_KEY;
+
+if (!GEOAPIFY_API_KEY) throw new Error("GEOAPIFY_API_KEY not found");
+
+export const TestAgent = async (prompt: string) => {
+    if (!prompt?.trim()) throw new Error("Prompt is empty");
+    const firstDraft = await draftModel.invoke([
+        new SystemMessage(DRAFT_PROMPT),
+        new HumanMessage(prompt),
+    ]);
+
+    const [places, fx] = await Promise.all([
+        prefetchPlaces(
+            firstDraft.destination!,
+            firstDraft.interests!,
+            GEOAPIFY_API_KEY,
+        ),
+        convertCurrency(
+            firstDraft.budget!,
+            firstDraft.currency!,
+            firstDraft.localCurrency!,
+        ),
+    ]);
+
+    const config = { configurable: { thread_id: "testAgent-001" } };
+
+    const result = await finalModel.invoke(
+        [
+            new SystemMessage(PLAN_PROMPT),
+            new HumanMessage(
+                `I'm planning to go to ${firstDraft.destination} for ${firstDraft.days} with a budget of ${fx}. I'm interested in going to places like ${JSON.stringify(places, null, 2)} and I want to make the trip from ${firstDraft.startDate} to ${firstDraft.endDate}. EXTRA INFO: ${prompt}`,
+            ),
         ],
-    },
-    config,
+        config,
+    );
+
+    return result;
+};
+
+const result = await TestAgent(
+    "Plan a 3-day trip to Kyoto for 2 people in December. Budget INR 800,000. Interested in temples, food, and one live show if anything is on.",
 );
 
 console.log(result);

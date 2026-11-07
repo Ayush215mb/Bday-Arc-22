@@ -17,11 +17,13 @@ export const DraftResponseSchema = z.object({
     budget: z.number().nullable(),
     currency: z
         .string()
-        .nullable()
+        .min(1)
+        .max(3)
         .describe("User's budget currency, ISO code"),
     localCurrency: z
         .string()
-        .nullable()
+        .min(1)
+        .max(3)
         .describe("Destination's currency, ISO code"),
     interests: z.array(z.string()),
 });

@@ -1,7 +1,5 @@
 import { createAgent } from "langchain";
-import { TavilySearch } from "@langchain/tavily";
-import type { AgentOptions } from "./schemas";
-import { loadModel } from "./models/model-loader";
+import { type AgentOptions } from "./schemas";
 import { MemorySaver } from "@langchain/langgraph";
 import {
     currencyConversionTool,
@@ -9,26 +7,17 @@ import {
     weatherInfoTool,
     placeSearchTool,
 } from "./tools";
+import { WebSearchTool } from "./tools/web-search.tool";
 
 export function createTripPlannerAgent(opts: AgentOptions) {
-    const search = new TavilySearch({
-        tavilyApiKey: opts.tavilyApiKey,
-        searchDepth: "basic",
-        maxResults: 3,
-    });
-
     return createAgent({
-        model: loadModel({
-            model: opts.model,
-            thinking: opts.thinking,
-            baseUrl: opts.ollamaBaseUrl,
-        }),
+        model: opts.model,
         tools: [
-            search,
+            WebSearchTool(opts.tavilyApiKey!, "basic"),
             currencyConversionTool,
             calculatorTool,
             weatherInfoTool,
-            placeSearchTool(opts.GEOAPIFY_API_KEY),
+            placeSearchTool(opts.GEOAPIFY_API_KEY!),
         ],
         systemPrompt: opts.systemPrompt,
         checkpointer: opts.checkpointer ?? new MemorySaver(),

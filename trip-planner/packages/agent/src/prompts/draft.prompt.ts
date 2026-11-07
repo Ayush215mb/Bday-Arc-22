@@ -7,7 +7,7 @@ Example output: {
   startDate: 'April (Tentative)',
   endDate: 'T+1',
   budget: 200000,
-  currency: 'INR (₹)',
-  localCurrency: 'JPY (¥)',
+  currency: 'INR',
+  localCurrency: 'JPY',
   interests: [ 'Temples', 'Food', 'Live Show (Traditional/Performance)' ]
 } `;
