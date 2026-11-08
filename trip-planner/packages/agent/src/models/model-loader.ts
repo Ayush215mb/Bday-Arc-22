@@ -10,10 +10,6 @@ export function loadModel(opts: {
     return new ChatOllama({
         model: opts.model ?? existingModels.gemma,
         baseUrl: opts.baseUrl ?? "http://localhost:11434",
-        headers: {
-            Authorization: `Bearer sk-gm-free-qKs1jCNqpDRB9GZuk3E2xz7PClD4A8WJqhhhWONR`,
-            "Content-Type": "application/json",
-        },
         think: opts.thinking ?? true,
         numCtx: 10000,
     });
@@ -32,6 +28,4 @@ export function loadDeepseek(opts: {
             apiKey: opts.apikey,
         },
     });
-
-    //""
 }
