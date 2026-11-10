@@ -1,7 +1,7 @@
 import { HumanMessage, SystemMessage } from "langchain";
 import { ToolMessage } from "@langchain/core/messages";
 import { S } from "./state";
-import { loadModel } from "../models/model-loader";
+import { loadDeepseek, loadModel } from "../models/model-loader";
 import { createTripPlannerAgent } from "../agent";
 import { DRAFT_PROMPT } from "../prompts/draft.prompt";
 import { RESEARCH_PROMPT } from "../prompts/research.prompt";
@@ -19,18 +19,21 @@ import { prefetchPlaces } from "../services/preFetchPlaces";
 
 const TAVILY_API_KEY = process.env.TAVILY_API_KEY;
 const GEOAPIFY_API_KEY = process.env.GEOAPIFY_API_KEY;
-
+const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
 if (!TAVILY_API_KEY) {
     throw new Error("TAVILY_API_KEY is not set");
 }
 if (!GEOAPIFY_API_KEY) {
     throw new Error("GEOAPIFY_API_KEY is not set");
 }
+if (!DEEPSEEK_API_KEY) {
+    throw new Error("DEEPSEEK_API_KEY is not set");
+}
 
 export const draft_node = async (state: S) => {
-    const draft_model = loadModel({
-        model: existingModels.qwen,
-        thinking: false,
+    const draft_model = loadDeepseek({
+        model: existingModels.deepseek,
+        apikey: DEEPSEEK_API_KEY,
     }).withStructuredOutput(DraftResponseSchema);
 
     if (!state.userInput) throw new Error("User Query not found");
@@ -66,11 +69,16 @@ export const research_node = async (state: S) => {
    Hotel candidates (no prices available):
    ${JSON.stringify(hotels, null, 2)}`;
 
+    const finalModel = loadDeepseek({
+        model: existingModels.deepseek,
+        apikey: DEEPSEEK_API_KEY,
+    });
+
     // Phase 1: tool loop (model calls tools, results feed back, until it stops)
     const agent = createTripPlannerAgent({
         tavilyApiKey: TAVILY_API_KEY!,
         GEOAPIFY_API_KEY: GEOAPIFY_API_KEY!,
-        model: existingModels.qwen,
+        model: finalModel,
         thinking: false,
         responseFormat: ItinerarySchema,
     });
@@ -114,9 +122,9 @@ export const plan_node = async (state: S) => {
         throw new Error("plan_node needs request and research");
     }
 
-    const planner = loadModel({
-        model: existingModels.qwen,
-        thinking: false,
+    const planner = loadDeepseek({
+        model: existingModels.deepseek,
+        apikey: DEEPSEEK_API_KEY,
     }).withStructuredOutput(ItinerarySchema);
 
     const messages = [

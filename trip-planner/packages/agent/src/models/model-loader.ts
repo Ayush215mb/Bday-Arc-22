@@ -1,6 +1,6 @@
 import { ChatOllama } from "@langchain/ollama";
 import { existingModels } from "../schemas";
-import { ChatDeepSeek } from "@langchain/deepseek";
+import { ChatOpenAI } from "@langchain/openai";
 
 export function loadModel(opts: {
     model?: string;
@@ -21,10 +21,11 @@ export function loadDeepseek(opts: {
     apikey: string;
     streaming?: boolean;
 }) {
-    return new ChatDeepSeek(opts.model!, {
+    return new ChatOpenAI(opts.model!, {
         streaming: opts.streaming,
+        reasoning: { context: "auto", effort: "none" },
         configuration: {
-            baseURL: opts.baseUrl,
+            baseURL: opts.baseUrl ?? process.env.DEEPSEEK_BASE_URL,
             apiKey: opts.apikey,
         },
     });

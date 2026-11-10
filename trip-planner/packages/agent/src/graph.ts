@@ -1,6 +1,9 @@
 import { Graph } from "./graph/index";
 
-const config = { configurable: { thread_id: "graph-001" } };
+const config = {
+    configurable: { thread_id: "graph-001" },
+    recursionLimit: 100,
+};
 
 const result = await Graph.invoke(
     {
