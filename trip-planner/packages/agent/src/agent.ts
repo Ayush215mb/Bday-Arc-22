@@ -4,7 +4,6 @@ import { MemorySaver } from "@langchain/langgraph";
 import {
     currencyConversionTool,
     calculatorTool,
-    weatherInfoTool,
     placeSearchTool,
 } from "./tools";
 import { WebSearchTool } from "./tools/web-search.tool";
@@ -16,7 +15,6 @@ export function createTripPlannerAgent(opts: AgentOptions) {
             WebSearchTool(opts.tavilyApiKey!, "basic"),
             currencyConversionTool,
             calculatorTool,
-            weatherInfoTool,
             placeSearchTool(opts.GEOAPIFY_API_KEY!),
         ],
         systemPrompt: opts.systemPrompt,
