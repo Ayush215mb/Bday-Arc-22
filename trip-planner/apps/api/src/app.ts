@@ -18,8 +18,9 @@ const agent = createTripPlannerAgent({
     responseFormat: ItinerarySchema,
     model: model,
 });
-
-export const app = new Hono()
+const app = new Hono()
     .use(cors())
     .get("/health", (c) => c.json({ ok: true }))
     .route("/trip", tripRoutes(agent));
+
+export default app;
