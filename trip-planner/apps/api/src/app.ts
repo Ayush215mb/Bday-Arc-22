@@ -4,14 +4,19 @@ import { createTripPlannerAgent } from "@trip-planner/agent";
 import { env } from "./env";
 import { tripRoutes } from "./routes/trip";
 import { ItinerarySchema, existingModels } from "@trip-planner/agent/schemas";
+import { loadDeepseek } from "@trip-planner/agent/models";
+
+const model = loadDeepseek({
+    model: existingModels.deepseek,
+    apikey: env.DEEPSEEK_API_KEY,
+    baseUrl: env.DEEPSEEK_BASE_URL,
+});
 
 const agent = createTripPlannerAgent({
     tavilyApiKey: env.TAVILY_API_KEY,
-    ollamaBaseUrl: env.OLLAMA_BASE_URL,
     GEOAPIFY_API_KEY: env.GEOAPIFY_API_KEY!,
     responseFormat: ItinerarySchema,
-    model: existingModels.qwen,
-    thinking: false,
+    model: model,
 });
 
 export const app = new Hono()
