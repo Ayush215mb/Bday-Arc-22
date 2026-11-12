@@ -20,6 +20,7 @@ const agent = createTripPlannerAgent({
 });
 const app = new Hono()
     .use(cors())
+    .get("/", (c) => c.text("Hello from Hono"))
     .get("/health", (c) => c.json({ ok: true }))
     .route("/trip", tripRoutes(agent));
 

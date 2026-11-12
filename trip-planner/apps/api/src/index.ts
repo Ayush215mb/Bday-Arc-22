@@ -5,3 +5,5 @@ import { env } from "./env";
 serve({ fetch: app.fetch, port: env.PORT }, (i) =>
     console.log(`API on http://localhost:${i.port}`),
 );
+
+export default app;
