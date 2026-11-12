@@ -1,8 +1,7 @@
 import { serve } from "@hono/node-server";
-import app from "./app";
-import { env } from "./env";
+import app from "./src/app";
 
-serve({ fetch: app.fetch, port: env.PORT }, (i) =>
+serve({ fetch: app.fetch, port: 3000 }, (i) =>
     console.log(`API on http://localhost:${i.port}`),
 );
 
