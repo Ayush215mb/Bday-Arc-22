@@ -1,0 +1,23 @@
+{
+    "name": "slack-agent",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "dev:agent": "pnpm --filter @slack-agent/agent dev",
+        "start:agent": "pnpm --filter @slack-agent/agent start",
+        "dev:web": "pnpm --filter @slack-agent/web dev",
+        "build:web": "pnpm --filter @slack-agent/web build"
+    },
+    "keywords": [],
+    "author": "glevoidd",
+    "license": "ISC",
+    "devEngines": {
+        "packageManager": {
+            "name": "pnpm",
+            "version": "12.18.0",
+            "onFail": "download"
+        }
+    },
+    "packageManager": "pnpm@12.18.0",
+    "type": "module"
+}
