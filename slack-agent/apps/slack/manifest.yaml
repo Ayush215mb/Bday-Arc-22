@@ -1,0 +1,46 @@
+display_information:
+    name: glevoidd Bot
+    description: A bot built with the AI SDK and Chat SDK
+
+features:
+    agent_view:
+        agent_description: A bot built with the AI SDK and Chat SDK
+    bot_user:
+        display_name: glevoidd Bot
+        always_online: true
+
+oauth_config:
+    scopes:
+        bot:
+            - app_mentions:read
+            - assistant:write
+            - channels:history
+            - channels:read
+            - chat:write
+            - groups:history
+            - groups:read
+            - im:history
+            - im:read
+            - mpim:history
+            - mpim:read
+            - reactions:read
+            - reactions:write
+            - users:read
+
+settings:
+    event_subscriptions:
+        request_url: https://your-domain.com/api/webhooks/slack
+        bot_events:
+            - app_mention
+            - message.channels
+            - message.groups
+            - message.im
+            - message.mpim
+            - member_joined_channel
+            - app_home_opened
+            - app_context_changed
+            - agent_session_stopped
+            - agent_session_title_changed
+    interactivity:
+        is_enabled: true
+        request_url: https://your-domain.com/api/webhooks/slack

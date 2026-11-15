@@ -1,0 +1,28 @@
+{
+    "name": "slack",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "pnpm tsx src/server.ts"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "module",
+    "dependencies": {
+        "@chat-adapter/slack": "^4.45.0",
+        "@chat-adapter/state-memory": "^4.45.0",
+        "@chat-adapter/state-redis": "^4.45.0",
+        "@hono/node-server": "^2.1.8",
+        "@slack-agent/agent": "workspace:*",
+        "@vercel/functions": "^3.11.3",
+        "chat": "^4.45.0",
+        "dotenv": "^18.0.10",
+        "hono": "^4.13.18"
+    },
+    "devDependencies": {
+        "tsx": "^4.23.15",
+        "typescript": "^5.9.3"
+    }
+}
