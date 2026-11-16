@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "pnpm tsx src/server.ts"
+        "dev": "pnpm --filter @slack-agent/agent build && tsx watch src/server.ts"
     },
     "keywords": [],
     "author": "",
