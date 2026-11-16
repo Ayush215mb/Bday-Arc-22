@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
-import { bot } from "./bot";
+import { bot } from "./bot.js";
 
 const app = new Hono();
 
