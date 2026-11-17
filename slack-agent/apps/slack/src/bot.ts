@@ -8,7 +8,7 @@ import { createRedisState } from "@chat-adapter/state-redis";
 const agent = Agent({ model: deepseekModel });
 
 export const bot = new Chat({
-    userName: "mybot",
+    userName: "glevoidd-bot",
     adapters: { slack: createSlackAdapter({ agentView: true }) },
     state: process.env.REDIS_URL ? createRedisState() : createMemoryState(),
 });
