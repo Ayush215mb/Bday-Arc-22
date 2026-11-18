@@ -1,0 +1,86 @@
+{
+    "display_information":
+        {
+            "name": "tester-01",
+            "description": "An Agent built to handle everything",
+        },
+    "features":
+        {
+            "app_home":
+                {
+                    "home_tab_enabled": true,
+                    "messages_tab_enabled": true,
+                    "messages_tab_read_only_enabled": false,
+                },
+            "bot_user": { "display_name": "tester-01", "always_online": true },
+            "agent_view":
+                {
+                    "agent_description": "An Agent built to handle everything",
+                    "suggested_prompts":
+                        [
+                            {
+                                "title": "prompt-1",
+                                "message": "Hello, can you help me with my work?",
+                            },
+                            {
+                                "title": "prompt-2",
+                                "message": "Hey, Can you inform everyone everyone about next week's meeting",
+                            },
+                        ],
+                },
+        },
+    "oauth_config":
+        {
+            "scopes":
+                {
+                    "bot":
+                        [
+                            "app_mentions:read",
+                            "assistant:write",
+                            "channels:history",
+                            "channels:read",
+                            "chat:write",
+                            "groups:history",
+                            "groups:read",
+                            "im:history",
+                            "im:read",
+                            "mpim:history",
+                            "mpim:read",
+                            "reactions:read",
+                            "reactions:write",
+                            "users:read",
+                        ],
+                },
+            "pkce_enabled": false,
+        },
+    "settings":
+        {
+            "event_subscriptions":
+                {
+                    "bot_events":
+                        [
+                            "agent_session_stopped",
+                            "agent_session_title_changed",
+                            "app_context_changed",
+                            "app_home_opened",
+                            "app_mention",
+                            "member_joined_channel",
+                            "message.channels",
+                            "message.groups",
+                            "message.im",
+                            "message.mpim",
+                        ],
+                    "request_url": "https://girlfriend-quad-seek-milwaukee.trycloudflare.com/api/webhooks/slack",
+                },
+            "interactivity":
+                {
+                    "is_enabled": true,
+                    "request_url": "https://girlfriend-quad-seek-milwaukee.trycloudflare.com/api/webhooks/slack",
+                },
+            "org_deploy_enabled": false,
+            "socket_mode_enabled": false,
+            "is_mcp_enabled": false,
+            "token_rotation_enabled": false,
+            "app_level_token_rotation_enabled": false,
+        },
+}

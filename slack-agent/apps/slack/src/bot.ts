@@ -8,14 +8,17 @@ import { createRedisState } from "@chat-adapter/state-redis";
 const agent = Agent({ model: deepseekModel });
 
 export const bot = new Chat({
-    userName: "glevoidd-bot",
+    userName: "glevoidd",
     adapters: { slack: createSlackAdapter({ agentView: true }) },
     state: process.env.REDIS_URL ? createRedisState() : createMemoryState(),
 });
 
+console.log(JSON.stringify(bot, null, 2));
+
 async function respond(thread: Thread) {
     try {
         console.log("respond: start");
+        console.log(thread);
         await thread.startTyping();
         const { messages } = await bot.history.thread.list(thread.id, {
             limit: 20,
@@ -32,7 +35,9 @@ async function respond(thread: Thread) {
 }
 
 bot.onNewMention(async (thread) => {
+    console.log(thread);
     await thread.subscribe();
+    console.log(thread);
     await respond(thread);
 });
 

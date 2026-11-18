@@ -5,6 +5,7 @@
     "scripts": {
         "dev:agent": "pnpm --filter @slack-agent/agent dev",
         "start:agent": "pnpm --filter @slack-agent/agent start",
+        "dev:api":"pnpm --filter @slack-agent/slack dev",
         "dev:web": "pnpm --filter @slack-agent/web dev",
         "build:web": "pnpm --filter @slack-agent/web build"
     },

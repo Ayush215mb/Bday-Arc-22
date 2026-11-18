@@ -1,13 +1,13 @@
 {
-    "name": "slack",
+    "name": "@slack-agent/slack",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "pnpm --filter @slack-agent/agent build && tsx watch src/server.ts"
+        "dev": "pnpm --filter @slack-agent/agent build && tsx watch src/server.ts "
     },
     "keywords": [],
-    "author": "",
+    "author": "glevoidd",
     "license": "ISC",
     "type": "module",
     "dependencies": {

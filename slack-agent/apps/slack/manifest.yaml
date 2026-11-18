@@ -1,8 +1,8 @@
 {
     "display_information":
         {
-            "name": "glevoidd Bot",
-            "description": "A bot built with the AI SDK and Chat SDK",
+            "name": "glevoidd",
+            "description": "An Agent built with the AI SDK and Chat SDK",
         },
     "features":
         {
@@ -12,12 +12,21 @@
                     "messages_tab_enabled": true,
                     "messages_tab_read_only_enabled": false,
                 },
-            "bot_user":
-                { "display_name": "glevoidd Bot", "always_online": true },
+            "bot_user": { "display_name": "glevoidd", "always_online": true },
             "agent_view":
                 {
                     "agent_description": "A bot built with the AI SDK and Chat SDK",
-                    "suggested_prompts": [],
+                    "suggested_prompts":
+                        [
+                            {
+                                "title": "prompt-1",
+                                "message": "Hello, can you help me with my work?",
+                            },
+                            {
+                                "title": "prompt-2",
+                                "message": "Hey, Can you inform everyone everyone about next week's meeting",
+                            },
+                        ],
                 },
         },
     "oauth_config":
