@@ -1,0 +1,5 @@
+{
+    "code-runner.executorMap": {
+      "cpp": "cd $dir && ROOT=$(git rev-parse --show-toplevel) && mkdir -p $ROOT/bin && g++ $fileName -o $ROOT/bin/$fileNameWithoutExt && $ROOT/bin/$fileNameWithoutExt"
+    }
+  }
