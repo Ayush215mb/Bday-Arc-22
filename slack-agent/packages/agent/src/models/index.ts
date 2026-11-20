@@ -1,2 +1,2 @@
-export { deepseekModel } from "./deepseek-model";
+export { createDeepseekModel } from "./deepseek-model";
 export { qwenModel, gemmaModel } from "./ollama-model";
