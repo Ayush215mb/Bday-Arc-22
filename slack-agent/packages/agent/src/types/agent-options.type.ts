@@ -15,4 +15,5 @@ export interface AgentOptions {
     BaseUrl?: string;
     systemPrompt?: string;
     tools?: ToolSet;
+    tracing: boolean;
 }

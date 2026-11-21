@@ -30,7 +30,6 @@ async function respond(thread: Thread) {
             messages: await toAiMessages(messages),
             abortSignal: thread.signal,
         });
-        console.log(JSON.stringify(result, null, 2));
 
         await thread.post(result.text);
     } catch (err) {

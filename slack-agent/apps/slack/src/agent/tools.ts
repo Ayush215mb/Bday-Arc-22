@@ -1,4 +1,4 @@
-import { postSlackMessageTool } from "@slack-agent/agent";
+import { postSlackMessageTool, findSlackUserTool } from "@slack-agent/agent";
 import { WebClient } from "@slack/web-api";
 
 const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN;
@@ -8,4 +8,5 @@ const slack = new WebClient(SLACK_BOT_TOKEN);
 
 export const tools = {
     createpostSlackMessageTool: postSlackMessageTool(slack),
+    findSlackUserTool: findSlackUserTool(slack),
 };
