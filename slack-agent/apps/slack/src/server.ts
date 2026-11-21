@@ -1,13 +1,13 @@
 import "dotenv/config";
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
-import { bot } from "./bot.js";
+import { glevoidd } from "./agent/agent.js";
 import { waitUntil } from "@vercel/functions";
 
 const app = new Hono();
 
 app.post("/api/webhooks/slack", (c) =>
-    bot.webhooks.slack(c.req.raw, {
+    glevoidd.webhooks.slack(c.req.raw, {
         waitUntil: (task) => waitUntil(task),
     }),
 ).get("/", (c) => {
