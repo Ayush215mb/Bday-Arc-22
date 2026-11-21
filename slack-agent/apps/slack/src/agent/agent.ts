@@ -11,12 +11,16 @@ const agent = Agent({
     model: deepseekModel,
     systemPrompt: `You are a slack agent created to help the team`,
     tools: tools,
+    reasoning: "medium",
+    tracing: true,
 });
 
 // glevoidd is the name of the workspace
 export const glevoidd = new Chat({
     userName: "glevoidd",
-    adapters: { slack: createSlackAdapter({ agentView: true }) },
+    adapters: {
+        slack: createSlackAdapter({ agentView: true, sessionTitle: false }),
+    },
     state: process.env.REDIS_URL ? createRedisState() : createMemoryState(),
 });
 
@@ -26,12 +30,11 @@ async function respond(thread: Thread) {
         const { messages } = await glevoidd.history.thread.list(thread.id, {
             limit: 20,
         });
-        const result = await agent.generate({
+        const result = await agent.stream({
             messages: await toAiMessages(messages),
             abortSignal: thread.signal,
         });
-
-        await thread.post(result.text);
+        await thread.post(result.stream);
     } catch (err) {
         console.error("respond failed:", err);
     }
