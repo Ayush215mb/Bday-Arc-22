@@ -4,8 +4,8 @@ import { createSlackAdapter } from "@chat-adapter/slack";
 import { createMemoryState } from "@chat-adapter/state-memory";
 import { Agent } from "@slack-agent/agent";
 import { createRedisState } from "@chat-adapter/state-redis";
-import { tools } from "./tools";
-import { deepseekModel } from "./model";
+import { tools } from "./tools.js";
+import { deepseekModel } from "./model.js";
 
 const agent = Agent({
     model: deepseekModel,
