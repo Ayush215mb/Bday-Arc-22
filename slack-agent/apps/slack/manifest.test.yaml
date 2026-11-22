@@ -49,6 +49,7 @@
                             "reactions:read",
                             "reactions:write",
                             "users:read",
+                            channels:manage,
                         ],
                 },
             "pkce_enabled": false,
