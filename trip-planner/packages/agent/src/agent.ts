@@ -1,6 +1,6 @@
-import { createAgent } from "langchain";
 import { type AgentOptions } from "./schemas";
 import { MemorySaver } from "@langchain/langgraph";
+import { createDeepAgent } from "deepagents";
 import {
     currencyConversionTool,
     calculatorTool,
@@ -9,7 +9,7 @@ import {
 import { WebSearchTool } from "./tools/web-search.tool";
 
 export function createTripPlannerAgent(opts: AgentOptions) {
-    return createAgent({
+    return createDeepAgent({
         model: opts.model,
         tools: [
             WebSearchTool(opts.tavilyApiKey!, "basic"),
@@ -19,7 +19,6 @@ export function createTripPlannerAgent(opts: AgentOptions) {
         ],
         systemPrompt: opts.systemPrompt,
         checkpointer: opts.checkpointer ?? new MemorySaver(),
-        responseFormat: opts.responseFormat,
     });
 }
 

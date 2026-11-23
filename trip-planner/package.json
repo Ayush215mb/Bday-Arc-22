@@ -4,7 +4,6 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "cli": "tsx scripts/cli.ts",
         "dev:api": "pnpm --filter @trip-planner/api dev",
         "dev:web": "pnpm --filter @trip-planner/web dev",
         "dev:agent": "pnpm --filter @trip-planner/agent dev",
@@ -12,8 +11,7 @@
         "start:agent": "pnpm --filter @trip-planner/agent start",
         "start:graph": "pnpm --filter @trip-planner/agent start:graph",
         "build:web": "pnpm --filter @trip-planner/web build",
-        "test:agent": "pnpm --filter @trip-planner/agent test",
-        "typecheck": "pnpm -r typecheck"
+        "test:agent": "pnpm --filter @trip-planner/agent test"
     },
     "keywords": [],
     "author": "glevoidd",
@@ -21,11 +19,11 @@
     "devEngines": {
         "packageManager": {
             "name": "pnpm",
-            "version": "12.18.0",
+            "version": "12.23.0",
             "onFail": "download"
         }
     },
-    "packageManager": "pnpm@12.18.0",
+    "packageManager": "pnpm@12.23.0",
     "type": "module",
     "devDependencies": {
         "@langchain/langgraph": "^1.5.2",

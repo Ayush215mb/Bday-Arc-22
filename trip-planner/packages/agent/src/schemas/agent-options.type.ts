@@ -11,6 +11,6 @@ export interface AgentOptions {
     thinking?: boolean;
     BaseUrl?: string;
     checkpointer?: BaseCheckpointSaver;
-    responseFormat: z.ZodObject;
+    responseFormat?: z.ZodObject;
     systemPrompt?: string;
 }
