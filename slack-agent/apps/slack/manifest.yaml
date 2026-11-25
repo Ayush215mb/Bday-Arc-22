@@ -3,6 +3,7 @@
         {
             "name": "glevoidd",
             "description": "An Agent built with the AI SDK and Chat SDK",
+            "background_color": "#2C2D30",
         },
     "features":
         {
@@ -49,6 +50,9 @@
                             "reactions:read",
                             "reactions:write",
                             "users:read",
+                            "channels:manage",
+                            "chat:write.public",
+                            "users:read.email",
                         ],
                 },
             "pkce_enabled": false,
