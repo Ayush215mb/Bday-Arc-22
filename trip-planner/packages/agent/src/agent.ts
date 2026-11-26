@@ -39,7 +39,7 @@ export function createTripPlannerAgent(opts: AgentOptions) {
                 description:
                     "Delegate one focused summary task: turn findings on a single subtopic into clear prose. Use when each parallel subagent should produce readable copy.",
                 systemPrompt:
-                    "You are a writing specialist. Complete your assigned subtopic only. Return a short paragraph or 3–5 bullets with the key takeaways. No preamble, no follow-up questions, and do not delegate further work.",
+                    "You are a writing specialist. Complete your assigned subtopic only. Return a short paragraph or 3–5 bullets with the key takeaways. No preamble, no follow-up questions, and do not delegate further work ",
             },
         ],
     });
